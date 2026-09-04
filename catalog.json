@@ -8,7 +8,7 @@
     "desc": "Plain-text ledger and budget tracker with double-entry support and CSV import.",
     "updated": "2 days ago",
     "filename": "ledgerline.py",
-    "sourceUrl": "https://raw.githubusercontent.com/enesomurordu/foundry-files/main/files/ledgerline.py"
+    "sourceUrl": "https://raw.githubusercontent.com/enesomurordu/foundry-files/files/ledgerline.py"
   },
   {
     "id": "clearcut",
@@ -19,6 +19,6 @@
     "desc": "Disk usage visualizer with a simple treemap and one-click cleanup.",
     "updated": "yesterday",
     "filename": "clearcut.py",
-    "sourceUrl": "https://raw.githubusercontent.com/enesomurordu/foundry-files/main/files/clearcut.py"
+    "sourceUrl": "https://raw.githubusercontent.com/enesomurordu/foundry-files/files/clearcut.py"
   }
 ]
