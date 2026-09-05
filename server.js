@@ -25,7 +25,7 @@ app.get('/api/programs', (req, res) => {
   res.json(publicList);
 });
 
-// GET /api/download/:id -> streams the file from GitHub, filename intact
+// GET /api/download/:id -> streams binary/archive files safely from GitHub
 app.get('/api/download/:id', async (req, res) => {
   const program = catalog.find(p => p.id === req.params.id);
   if (!program) {
@@ -44,7 +44,7 @@ app.get('/api/download/:id', async (req, res) => {
       return res.status(502).json({ error: 'Upstream file unavailable' });
     }
 
-    // Tarayıcının güvenli indirme yapabilmesi için başlıkları netleştiriyoruz
+    // Dosya türüne göre doğru başlıkları atıyoruz (RAR için octet-stream şarttır)
     res.setHeader('Content-Type', 'application/octet-stream');
     res.setHeader('Content-Disposition', `attachment; filename="${program.filename}"`);
     
@@ -53,8 +53,10 @@ app.get('/api/download/:id', async (req, res) => {
       res.setHeader('Content-Length', contentLength);
     }
 
-    // Buffer tabanlı aktarım (Ağ hatası riskini en aza indirir)
-    const buffer = Buffer.from(await githubRes.arrayBuffer());
+    // Binary dosyaları (rar, zip vb.) veri kaybı olmadan Buffer'a çevirip gönderiyoruz
+    const arrayBuffer = await githubRes.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+    
     res.send(buffer);
 
   } catch (err) {
