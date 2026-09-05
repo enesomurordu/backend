@@ -44,21 +44,19 @@ app.get('/api/download/:id', async (req, res) => {
       return res.status(502).json({ error: 'Upstream file unavailable' });
     }
 
-    res.setHeader('Content-Disposition', `attachment; filename="${program.filename}"`);
+    // Tarayıcının güvenli indirme yapabilmesi için başlıkları netleştiriyoruz
     res.setHeader('Content-Type', 'application/octet-stream');
-    if (githubRes.headers.get('content-length')) {
-      res.setHeader('Content-Length', githubRes.headers.get('content-length'));
+    res.setHeader('Content-Disposition', `attachment; filename="${program.filename}"`);
+    
+    const contentLength = githubRes.headers.get('content-length');
+    if (contentLength) {
+      res.setHeader('Content-Length', contentLength);
     }
 
-    // Stream the response body straight through to the client.
-    const reader = githubRes.body.getReader();
-    req.on('close', () => reader.cancel().catch(() => {}));
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      res.write(value);
-    }
-    res.end();
+    // Buffer tabanlı aktarım (Ağ hatası riskini en aza indirir)
+    const buffer = Buffer.from(await githubRes.arrayBuffer());
+    res.send(buffer);
+
   } catch (err) {
     console.error(`Download proxy error for ${program.id}:`, err);
     if (!res.headersSent) res.status(500).json({ error: 'Download failed' });
