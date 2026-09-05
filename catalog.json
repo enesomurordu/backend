@@ -20,5 +20,15 @@
     "updated": "yesterday",
     "filename": "clearcut.py",
     "sourceUrl": "https://raw.githubusercontent.com/enesomurordu/foundry-files/files/clearcut.py"
-  }
+  },
+      "id": "vaultguard",
+    "name": "Vault Guard",
+    "cat": "productivity",
+    "version": "v1.2.0",
+    "size": "9.385 KB",
+    "desc": "Use and see how you will safe your passwords",
+    "updated": "2 days ago",
+    "filename": "security.rar",
+    "sourceUrl": "https://raw.githubusercontent.com/enesomurordu/foundry-files/files/security.rar"
+  },
 ]
